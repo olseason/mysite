@@ -14,7 +14,7 @@ import com.javaex.util.WebUtil;
 import com.javaex.vo.GuestVo;
 
 
-@WebServlet("/guest")
+@WebServlet("/gbc")
 public class GuestbookController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        

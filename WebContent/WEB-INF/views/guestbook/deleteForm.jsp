@@ -1,8 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 <%
-//1.파라미터 꺼내기
-int no = Integer.parseInt(request.getParameter("no"));
+
+	int no = Integer.parseInt(request.getParameter("no"));
 %>
 
 <!DOCTYPE html>
@@ -10,43 +10,16 @@ int no = Integer.parseInt(request.getParameter("no"));
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<link href="assets/css/mysite.css" rel="stylesheet" type="text/css">
-<link href="assets/css/guestbook.css" rel="stylesheet" type="text/css">
+<link href="./assets/css/mysite.css" rel="stylesheet" type="text/css">
+<link href="./assets/css/guestbook.css" rel="stylesheet" type="text/css">
 
 </head>
 
 <body>
 	<div id="wrap">
 
-		<div id="header" class="clearfix">
-			<h1>
-				<a href="./main">MySite</a>
-			</h1>
-
-			<!-- 
-			<ul>
-				<li>황일영 님 안녕하세요^^</li>
-				<li><a href="" class="btn_s">로그아웃</a></li>
-				<li><a href="" class="btn_s">회원정보수정</a></li>
-			</ul>
-			-->
-			<ul>
-				<li><a href="./user?action=lform" class="btn_s">로그인</a></li>
-				<li><a href="./user?action=jform" class="btn_s">회원가입</a></li>
-			</ul>
-
-		</div>
-		<!-- //header -->
-
-		<div id="nav">
-			<ul class="clearfix">
-				<li><a href="">입사지원서</a></li>
-				<li><a href="">게시판</a></li>
-				<li><a href="">갤러리</a></li>
-				<li><a href="./gbc?action=addList">방명록</a></li>
-			</ul>
-		</div>
-		<!-- //nav -->
+	<!-- header (로고 로그인버튼) nav (메인상단메뉴) -->
+	<jsp:include page="/WEB-INF/views/includes/header.jsp"></jsp:include>
 
 		<div id="container" class="clearfix">
 			<div id="aside">
@@ -89,7 +62,8 @@ int no = Integer.parseInt(request.getParameter("no"));
 								<td><a href="./gbc?action=addList">[메인으로 돌아가기]</a></td>
 							</tr>
 						</table>
-						<input type='hidden' name="no" value="<%=no%>"> <input type='hidden' name="action" value="delete">
+						<input type='hidden' name="no" value="<%=no%>"> 
+						<input type='hidden' name="action" value="delete">
 					</form>
 
 				</div>
@@ -100,7 +74,7 @@ int no = Integer.parseInt(request.getParameter("no"));
 		</div>
 		<!-- //container  -->
 
-		<div id="footer">Copyright ⓒ 2021 이소정. All right reserved</div>
+		<jsp:include page="/WEB-INF/views/includes/footer.jsp"></jsp:include>
 		<!-- //footer -->
 
 	</div>

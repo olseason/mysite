@@ -1,9 +1,16 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="com.javaex.dao.GuestDao" %>
 <%@ page import="com.javaex.vo.GuestVo" %>
+<%@ page import="com.javaex.vo.UserVo" %>
 <%@ page import="java.util.List" %>
 
 <%
+	/*로그인 관련*/
+	UserVo authUser= (UserVo)session.getAttribute("authUser");
+	
+	/*리스트 출력관련*/
 	List<GuestVo> guestList = (List<GuestVo>)request.getAttribute("gList");
+	
 %>
 
 <!DOCTYPE html>
@@ -12,43 +19,16 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 
-<link href="/mysite/assets/css/mysite.css" rel="stylesheet" type="text/css">
-<link href="/mysite/assets/css/guestbook.css" rel="stylesheet" type="text/css">
+<link href="./assets/css/mysite.css" rel="stylesheet" type="text/css">
+<link href="./assets/css/guestbook.css" rel="stylesheet" type="text/css">
 
 </head>
 
 <body>
 	<div id="wrap">
-
-		<div id="header" class="clearfix">
-			<h1>
-				<a href="./main">MySite</a>
-			</h1>
-
-			<!-- 
-			<ul>
-				<li>이소정 님 안녕하세요^^</li>
-				<li><a href="" class="btn_s">로그아웃</a></li>
-				<li><a href="" class="btn_s">회원정보수정</a></li>
-			</ul>
-			-->
-			<ul>
-				<li><a href="./user?action=loginForm" class="btn_s">로그인</a></li>
-				<li><a href="./user?action=joinForm" class="btn_s">회원가입</a></li>
-			</ul>
-
-		</div>
-		<!-- //header -->
-
-		<div id="nav">
-			<ul class="clearfix">
-				<li><a href="">입사지원서</a></li>
-				<li><a href="">게시판</a></li>
-				<li><a href="">갤러리</a></li>
-				<li><a href="./gbc?action=addList">방명록</a></li>
-			</ul>
-		</div>
-		<!-- //nav -->
+	
+	<!-- header (로고 로그인버튼) nav (메인상단메뉴) -->
+	<jsp:include page="/WEB-INF/views/includes/header.jsp"></jsp:include>
 
 		<div id="container" class="clearfix">
 			<div id="aside">
@@ -115,39 +95,20 @@
 							<col style="width: 10%;">
 						</colgroup>
 						<tr>
-							<td>1234555</td>
-							<td>이정재</td>
-							<td>2020-03-03 12:12:12</td>
-							<td><a href="">[삭제]</a></td>
-						</tr>
-						<tr>
-							<td colspan=4 class="text-left">방명록 글입니다. 방명록 글입니다.</td>
-						</tr>
-					</table>
-					<!-- //guestRead -->
-
-
-					<table class="guestRead">
-						<colgroup>
-							<col style="width: 10%;">
-							<col style="width: 40%;">
-							<col style="width: 40%;">
-							<col style="width: 10%;">
-						</colgroup>
-						<tr>
 							<td><%= guestList.get(i).getNo() %></td>
 							<td><%= guestList.get(i).getName() %></td>
 							<td><%= guestList.get(i).getRegDate() %></td>
-							<td><a href="./gbc?action=dform&no=<%= guestList.get(i).getNo() %>">[삭제]</a></td>
+							<td><a href="./gbc?action=dform&no=<%= guestList.get(i).getNo() %>>">[삭제]</a></td>
 						</tr>
 						<tr>
-							<td colspan=4 class="text-left"><%= guestList.get(i).getContent() %></td>
+							<td colspan="4"><%= guestList.get(i).getContent() %></td>
 						</tr>
 					</table>
-					<!-- //guestRead -->
+					<br>
 					<%
 					}
 					%>
+
 
 				</div>
 				<!-- //guestbook -->
@@ -157,8 +118,9 @@
 		</div>
 		<!-- //container  -->
 
-		<div id="footer">Copyright ⓒ 2020 이소정. All right reserved</div>
+		<jsp:include page="/WEB-INF/views/includes/footer.jsp"></jsp:include>
 		<!-- //footer -->
+		
 	</div>
 	<!-- //wrap -->
 

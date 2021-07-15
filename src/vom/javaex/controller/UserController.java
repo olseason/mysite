@@ -6,6 +6,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.javaex.dao.UserDao;
 import com.javaex.util.WebUtil;
@@ -60,11 +61,51 @@ public class UserController extends HttpServlet {
 			
 			//로그인 폼 포워드
 			WebUtil.forward(request, response, "WEB-INF/views/user/loginForm.jsp");
+			
+		}else if("login".equals(action)) {
+			System.out.println("[UserController.login]");
+			
+			String id = request.getParameter("id");
+			String password = request.getParameter("pw");
+			
+			
+			//dao 회원정보 조회하기(세션 저장용)
+			UserDao userDao = new UserDao();
+			UserVo userVo = userDao.getUser(id, password);
+			
+			if(userVo == null) {
+				System.out.println("로그인성공");
+				//성공일 때 세션에 저장 (id, pw일치했을 때)
+				HttpSession session = request.getSession();
+				session.setAttribute("authUser", userVo);
+				
+				//리다이렉트
+				WebUtil.redirect(request, response, "/mysite/main");
+				
+			}else {
+				System.out.println("로그인실패");
+				
+				//리다이렉트-로그인용폼 페이지로 다시 돌아가기 
+				WebUtil.redirect(request, response, "/mysite/user?action=loginForm&result=fail");
+			}
+			
+			
+			
+			
+		}else if("logout".equals(action)) {
+			System.out.println("[UserController.logout]");
+			
+			//세션에 있는 "authUser"정보삭제
+			HttpSession session = request.getSession();
+			session.removeAttribute("authUser");
+			session.invalidate();
+			
+			WebUtil.redirect(request, response, "/mysite/main");
 		}
 		
 
 		
-		//회원가입
+		
 		
 	}
 
