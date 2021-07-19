@@ -14,9 +14,12 @@ public class DaoTest {
 		userDao.userInsert(userVo);
 		*/
 		
+		/*
 		UserDao userDao = new UserDao();
 		UserVo userVo = userDao.getUser("olseason", "4567");
 		System.out.println(userVo);
+		*/
 	}
+	
 
 }
