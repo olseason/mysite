@@ -8,9 +8,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.javaex.vo.GuestVo;
+import com.javaex.vo.GuestbookVo;
 
-public class GuestDao {
+public class GuestbookDao {
 	// 0. import java.sql.*;
 		private Connection conn = null;
 		private PreparedStatement pstmt = null;
@@ -55,7 +55,7 @@ public class GuestDao {
 		}
 
 		// 방명록 추가
-		public int guestInsert(GuestVo guestVo) {
+		public int guestInsert(GuestbookVo guestVo) {
 			int count = 0;
 			getConnection();
 
@@ -87,13 +87,13 @@ public class GuestDao {
 		
 		
 		// 방명록 리스트(검색안할때)
-		public List<GuestVo> getGuestList() {
+		public List<GuestbookVo> getGuestList() {
 			return getGuestList("");
 		}
 
 		// 방명록 리스트(검색할때)
-		public List<GuestVo> getGuestList(String keword) {
-			List<GuestVo> guestList = new ArrayList<GuestVo>();
+		public List<GuestbookVo> getGuestList(String keword) {
+			List<GuestbookVo> guestList = new ArrayList<GuestbookVo>();
 
 			getConnection();
 
@@ -131,7 +131,7 @@ public class GuestDao {
 					String content = rs.getString("content");
 					
 
-					GuestVo guestVo = new GuestVo(no, name, password, regDate, content);
+					GuestbookVo guestVo = new GuestbookVo(no, name, password, regDate, content);
 					guestList.add(guestVo);
 				}
 
