@@ -22,7 +22,7 @@ public class BoardController extends HttpServlet {
  
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// post방식 한글 깨짐 방지
+				// post방식 한글 깨짐 방지
 				request.setCharacterEncoding("UTF-8");
 
 				// 파라미터 action="값" 읽어오기.
@@ -150,7 +150,7 @@ public class BoardController extends HttpServlet {
 					WebUtil.redirect(request, response, "/mysite/board?action=list");
 				} else if ("search".equals(action)) {
 
-					// 파라미터 값 가져요기(keyword)
+					// 파라미터 값 가져오기(keyword)
 					String keyword = request.getParameter("search");
 
 					// search() 메소드 사용
