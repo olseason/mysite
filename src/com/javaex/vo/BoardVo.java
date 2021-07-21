@@ -13,13 +13,15 @@ public class BoardVo {
 	private String pw;
 	private String name;
 	private String gender;
+	private int rownum;
 
 	// 생성자
 	public BoardVo() {
 
 	}
 
-	public BoardVo(int no, String id, String name, String title, int hit, String content, String reg_date, int user_no) {
+	public BoardVo(int no, String id, String name, String title, int hit, String content, String reg_date,
+			int user_no) {
 		this.no = no;
 		this.title = title;
 		this.content = content;
@@ -42,11 +44,14 @@ public class BoardVo {
 		this.content = content;
 	}
 
-	public BoardVo(int no, String title, int hit, String name, String reg_date, int user_no) {
+	public BoardVo(int rounum, int no, String title, int hit, String name, String content, String reg_date,
+			int user_no) {
+		this.rownum = rounum;
 		this.no = no;
 		this.title = title;
 		this.hit = hit;
 		this.reg_date = reg_date;
+		this.content = content;
 		this.name = name;
 		this.user_no = user_no;
 	}
@@ -84,9 +89,18 @@ public class BoardVo {
 		this.gender = gender;
 	}
 
-	// 메소드 gs
+	// 메소드 - GS
+
 	public int getNo() {
 		return no;
+	}
+
+	public int getRownum() {
+		return rownum;
+	}
+
+	public void setRownum(int rownum) {
+		this.rownum = rownum;
 	}
 
 	public void setNo(int no) {
@@ -165,8 +179,7 @@ public class BoardVo {
 		this.gender = gender;
 	}
 
-	
-	// 메소드 일반
+	// 메소드 - 일반
 	@Override
 	public String toString() {
 		return "BoardVo [no=" + no + ", title=" + title + ", content=" + content + ", hit=" + hit + ", reg_date="

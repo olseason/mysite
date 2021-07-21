@@ -57,7 +57,7 @@
                 <input type="password" id="input-pass" name="pw" value="" placeholder=" 비밀번호를 입력하세요">
               </div>
 
-              <c:if test="${param.result != fail}">
+              <c:if test="${param.result == 'fail'}">
                 <p>로그인에 실패했습니다. 다시 로그인 해주세요.</p>
               </c:if>
 

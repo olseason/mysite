@@ -107,8 +107,14 @@ public class BoardDao {
 		return boardVo;
 	}
 
-	// 게시판 목록 정보 불러오기
+	// 게시판 목록
 	public List<BoardVo> boardList() {
+
+		return boardList("");
+	}
+
+	// 게시판 목록 불러오기 + 키워드 검색
+	public List<BoardVo> boardList(String keyword) {
 		List<BoardVo> boardList = new ArrayList<BoardVo>();
 
 		// 2번, 4번 메소드
@@ -116,35 +122,66 @@ public class BoardDao {
 
 		try {
 			// 3. SQL문 준비 / 바인딩 / 실행
-			String select = "";
-			select += " SELECT ";
-			select += "     b.no, ";
-			select += "     b.title, ";
-			select += "     b.hit, ";
-			select += "     u.name, ";
-			select += "     b.reg_date, ";
-			select += "     b.user_no ";
-			select += " FROM ";
-			select += "     users  u, ";
-			select += "     board  b ";
-			select += " WHERE ";
-			select += "     u.no = b.user_no ";
-			select += " ORDER BY ";
-			select += "     b.reg_date DESC ";
+			String search = "";
+			search += " SELECT ";
+			search += "     rn, ";
+			search += "     ub.no, ";
+			search += "     ub.title, ";
+			search += "     ub.hit, ";
+			search += "     ub.name, ";
+			search += "     ub.content, ";
+			search += "     ub.reg_date, ";
+			search += "     ub.user_no ";
+			search += " FROM ";
+			search += "     ( ";
+			search += "         SELECT ";
+			search += "             ROWNUM rn, ";
+			search += "             b.no, ";
+			search += "             b.title, ";
+			search += "             b.hit, ";
+			search += "             u.name, ";
+			search += "             b.content, ";
+			search += "             b.reg_date, ";
+			search += "             b.user_no ";
+			search += "         FROM ";
+			search += "             users  u, ";
+			search += "             board  b ";
+			search += "         WHERE ";
+			search += "             u.no = b.user_no ";
+			search += "         ORDER BY ";
+			search += "             b.reg_date ASC ";
+			search += "     ) ub ";
 
-			pstmt = conn.prepareStatement(select);
+			if (keyword == null || keyword.equals("")) {
+				search += " ORDER BY ";
+				search += "     rn DESC ";
+
+			} else {
+				search += " WHERE ";
+				search += "     ( ub.name ";
+				search += "       || ub.title ";
+				search += "       || ub.content ) LIKE '%" + keyword + "%' ";
+				search += " ORDER BY ";
+				search += "     rn DESC ";
+
+			}
+
+			pstmt = conn.prepareStatement(search);
 
 			rs = pstmt.executeQuery();
 
 			while (rs.next()) {
+				int rownum = rs.getInt("rn");
 				int no = rs.getInt("no");
 				String title = rs.getString("title");
 				int hit = rs.getInt("hit");
 				String name = rs.getString("name");
+				String content = rs.getString("content");
 				String reg_date = rs.getString("reg_date");
 				int userNo = rs.getInt("user_no");
 
-				BoardVo boardVo = new BoardVo(no, title, hit, name, reg_date, userNo);
+				BoardVo boardVo = new BoardVo(rownum, no, title, hit, name, content, reg_date, userNo);
+
 				boardList.add(boardVo);
 			}
 
@@ -156,6 +193,7 @@ public class BoardDao {
 
 		// 5번 메소드
 		this.close();
+
 		return boardList;
 	}
 
@@ -287,66 +325,6 @@ public class BoardDao {
 
 		// 5번 메소드
 		this.close();
-	}
-
-	// 키워드 검색
-	public List<BoardVo> search(String keyword) {
-		List<BoardVo> boardList = new ArrayList<BoardVo>();
-
-		// 2번, 4번 메소드
-		this.getConnection();
-
-		try {
-			// 3. SQL문 준비 / 바인딩 / 실행
-			String search = "";
-			search += " SELECT ";
-			search += "     b.no, ";
-			search += "     u.id, ";
-			search += "     u.name, ";
-			search += "     b.title, ";
-			search += "     b.hit, ";
-			search += "     b.content, ";
-			search += "     b.user_no, ";
-			search += "     b.reg_date ";
-			search += " FROM ";
-			search += "     users  u ";
-			search += "     LEFT OUTER JOIN board  b ON u.no = b.user_no ";
-			search += " WHERE ";
-			search += "     u.name LIKE '%" + keyword + "%' ";
-			search += "     OR b.title LIKE '%" + keyword + "%' ";
-			search += "     OR b.content LIKE '%" + keyword + "%' ";
-			search += " ORDER BY ";
-			search += "     b.reg_date DESC ";
-
-			pstmt = conn.prepareStatement(search);
-
-			rs = pstmt.executeQuery();
-
-			while (rs.next()) {
-				int no = rs.getInt("no");
-				String id = rs.getString("id");
-				String name = rs.getString("name");
-				String title = rs.getString("title");
-				int hit = rs.getInt("hit");
-				String content = rs.getString("content");
-				String reg_date = rs.getString("reg_date");
-				int user_no = rs.getInt("user_no");
-
-				BoardVo boardVo = new BoardVo(no, id, name, title, hit, content, reg_date, user_no);
-
-				boardList.add(boardVo);
-			}
-
-			// 4.결과처리
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-
-		// 5번 메소드
-		this.close();
-
-		return boardList;
 	}
 
 }
